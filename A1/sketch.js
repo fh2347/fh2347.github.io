@@ -7,7 +7,7 @@ function draw() {
     fill(255, 204, 0);
     rect(20, 20, 60, 60);
     ellipse(56, 46, 55, 55);
-    textSize(32);
+    textSize(60);
     fill(0, 102, 153);
     text('WHAT IS HAPPENING', 10, 60);
   }
