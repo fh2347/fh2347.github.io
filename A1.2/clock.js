@@ -3,7 +3,7 @@ function setup() {
 }
 
 function draw() {
-  background('green');
+  background('pink');
   fill(255, 204, 0);
 
   // Map the function second() to values from 0~400
@@ -21,5 +21,5 @@ function draw() {
   rotate(map(minute(), 0, 60, 0, 360));
   textSize(32);
   fill(0, 102, 153);
-  text('Agnes says hi', 10, 60);
+  text('nerdbro', 10, 60);
 }
