@@ -12,56 +12,99 @@ var hitwords = [
   "for",
   "from"
 ];
+var sign = [
+"?", "!"];
+var punc = [
+".", ","];
 
 function preload() {
 
-  // Assemble url for API call
   var url = "https://api.nytimes.com/svc/topstories/v2/home.json";
-  var apikey = "436e4c0731324a5faa7741a58ba6adec"; // see: https://developer.nytimes.com
+  var apikey = "6c251b7589c74deca159acbdaba2d9bb"; 
   url += "?api-key=" + apikey;
 
   nytResponse = loadJSON(url);
-  // loadJSON() is asynchronous, but calling it inside preload() guarantees
-  // we'll have a response before setup() and draw() is run.
 }
 
 function setup() {
-  createCanvas(640, 1000);
+  createCanvas(2000, 2000);
   background(0);
 
-  textSize(14);
+  textSize(20);
   textAlign(LEFT);
 
-  noLoop(); // since we're not animating, one frame is sufficient: run draw() just once
+  noLoop(); 
 
   extractHeadlines();
 }
 
 function draw() {
-  background(0);
 
-  var lineheight = 24;
-  var margin = 40;
+  var lineheight = 30;
+  var margin = 30;
   translate(margin, margin);
 
   for (var i = 0; i < headlines.length; i++) {
-    var words = split(headlines[i], ' ');
-    // console.log(words);
+    var words = split(headlines[i], '');
 
     var nextX = 0;
 
-    for (var j = 0; j < words.length; j++) {
-      if (hitwords.includes(words[j].toLowerCase())) {
-        fill("orange");
-      } else {
-        fill(255);
-      }
+      var rectheight = 3;
 
+
+//draw sign to circles
+
+
+    for (var j = 0; j < words.length; j++) {
+      stroke(400);
+      strokeWeight(1);
+      line(0,i*lineheight, nextX, i*lineheight);
+
+      //text
+      noFill();
+      noStroke();
       text(words[j]+' ', nextX, i*lineheight);
-      nextX += textWidth(words[j]+' ');
+      nextX += textWidth(words[j]+'  ');
+    
+
+      //define size of alphabets
+      var str1 = 'abcdefghijklmnopqrstuvwxyz';
+      var str2 = split(str1, '');
+      var size = (str2.indexOf(words[j])+1);
+
+      //define size of numbers
+      var str3 = '0123456789';
+      var str4 = split(str3, '');
+      var sizen = (str4.indexOf(words[j])+1);
+
+
+
+      //signs 
+      if (sign.includes(words[j].toLowerCase())) {
+        noStroke();
+        fill(0);
+        ellipse(nextX,i*lineheight,50,50);
+        //punc
+      } else if (punc.includes(words[j])){
+        noStroke();
+        fill(0);
+        ellipse(nextX,i*lineheight,20,20);
+        //alphabets
+      } else if (str2.includes(words[j].toLowerCase())){
+        noStroke();
+        fill(255,153,51,30);
+        ellipse(nextX,i*lineheight,size,size);
+
+      };
+      
     }
   }
+
+
 }
+
+
+
 
 function extractHeadlines() {
 
@@ -71,6 +114,7 @@ function extractHeadlines() {
     var h = nytResponse.results[i].title;
     // besides .title, other text data available to you include:
     // .abstract, .byline, .section, etc. etc.
+
     append(headlines, h);
   }
 

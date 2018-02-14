@@ -8,8 +8,8 @@ var myFont;
 var nytResponse;
 var letterCounts;
 
-var maxTextSize = 250;
-var defaultTextSize = 24;
+var maxTextSize = 200;
+var defaultTextSize = 30;
 
 function preload() {
   myFont = loadFont('SourceCodePro-Regular.ttf');
@@ -27,7 +27,7 @@ function preload() {
 function setup() {
   console.log(nytResponse); // check to see response looks right
 
-  createCanvas(640, 360);
+  createCanvas(1000, 500);
   background(0);
 
   textSize(defaultTextSize);
@@ -39,13 +39,13 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  background(100);
 
   // Set the left and top margin
   var margin = 10;
   translate(margin*4, margin*4);
 
-  var gap = 46; // in pixels
+  var gap = 60; // in pixels
   var counter = 35; // start at ASCII code 35
 
   for (var y = 0; y < height-gap; y += gap) {
@@ -53,8 +53,10 @@ function draw() {
 
       var letter = char(counter);
 
-      if (letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U') {
+      if (letter == 'W' || letter == 'O' || letter == 'M' || letter == 'A' || letter == 'N') {
         fill(255, 204, 0);
+        setTextSizeByLetterCount(letter);
+        text(letter, x, y);
       }
       else {
         fill(255);
