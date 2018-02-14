@@ -4,15 +4,14 @@
 // frequency of letters occurring in story headlines.
 
 // Declare global variables that we'll want to access throughout program.
-var myFont;
 var nytResponse;
 var letterCounts;
 
 var maxTextSize = 200;
-var defaultTextSize = 30;
+var defaultTextSize = 10;
 
 function preload() {
-  myFont = loadFont('SourceCodePro-Regular.ttf');
+
 
   // Assemble url for API call
   var url = "https://api.nytimes.com/svc/topstories/v2/home.json";
@@ -28,10 +27,9 @@ function setup() {
   console.log(nytResponse); // check to see response looks right
 
   createCanvas(1000, 500);
-  background(0);
+  background(255,255,255);
 
   textSize(defaultTextSize);
-  textFont(myFont);
   textAlign(CENTER, CENTER);
   noLoop(); // since we're not animating, one frame is sufficient: run draw() just once
 
@@ -39,10 +37,10 @@ function setup() {
 }
 
 function draw() {
-  background(100);
+  background(255,255,255);
 
   // Set the left and top margin
-  var margin = 10;
+  var margin = 20;
   translate(margin*4, margin*4);
 
   var gap = 60; // in pixels
@@ -54,12 +52,12 @@ function draw() {
       var letter = char(counter);
 
       if (letter == 'W' || letter == 'O' || letter == 'M' || letter == 'A' || letter == 'N') {
-        fill(255, 204, 0);
+        fill(255, 0, 255);
         setTextSizeByLetterCount(letter);
         text(letter, x, y);
       }
       else {
-        fill(255);
+        fill(0);
       }
 
       // Draw the letter to the screen
