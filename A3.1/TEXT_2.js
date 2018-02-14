@@ -1,22 +1,17 @@
-// Letters adapted from https://processing.org/examples/letters.html
-// ---
 // This example uses NYT's Top Stories API and visualizes the relative
-// frequency of letters occurring in story headlines.
+// length of story headlines.
+// ---
 
-// Declare global variables that we'll want to access throughout program.
 var myFont;
-var nytResponse;
-var letterCounts;
-
-var maxTextSize = 250;
-var defaultTextSize = 24;
+var headlines = [];
+var maxHeadLen, minHeadLen;
 
 function preload() {
   myFont = loadFont('SourceCodePro-Regular.ttf');
 
   // Assemble url for API call
   var url = "https://api.nytimes.com/svc/topstories/v2/home.json";
-  var apikey = "436e4c0731324a5faa7741a58ba6adec"; // see: https://developer.nytimes.com
+  var apikey = "6c251b7589c74deca159acbdaba2d9bb"; // see: https://developer.nytimes.com
   url += "?api-key=" + apikey;
 
   nytResponse = loadJSON(url);
@@ -25,90 +20,65 @@ function preload() {
 }
 
 function setup() {
-  console.log(nytResponse); // check to see response looks right
-
-  createCanvas(640, 360);
+  createCanvas(640, 800);
   background(0);
 
-  textSize(defaultTextSize);
+  textSize(7);
   textFont(myFont);
-  textAlign(CENTER, CENTER);
+  textAlign(LEFT);
+
   noLoop(); // since we're not animating, one frame is sufficient: run draw() just once
 
-  setupLettersCountData();
+  extractHeadlines();
 }
 
 function draw() {
   background(0);
 
   // Set the left and top margin
-  var margin = 10;
-  translate(margin*4, margin*4);
+  var margin = 40;
+  translate(margin, margin);
 
-  var gap = 46; // in pixels
-  var counter = 35; // start at ASCII code 35
+  var lineheight = 15;
+  var rectheight = 8;
 
-  for (var y = 0; y < height-gap; y += gap) {
-    for (var x = 0; x < width-gap; x += gap) {
+  for (var i = 0; i < headlines.length; i++) {
 
-      var letter = char(counter);
+    // draw rectangle
+    fill(120);
+    var rectwidth = map(headlines[i].length,minHeadLen, maxHeadLen, margin, width-margin*2);
+    rect(0, i*lineheight, rectwidth, -1*rectheight)
 
-      if (letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U') {
-        fill(255, 204, 0);
-      }
-      else {
-        fill(255);
-      }
-
-      // Draw the letter to the screen
-      setTextSizeByLetterCount(letter);
-      text(letter, x, y);
-
-      // Increment the counter
-      counter++;
-    }
+    // draw headline
+    fill(255);
+    text(headlines[i], 0, i*lineheight);
   }
 }
 
-function setupLettersCountData() {
+function extractHeadlines() {
 
-  // console.log("setupLettersCountData"); // make sure this function is called when we expect
+  // console.log(nytResponse); // take a look at the full API response structure
 
   for (var i = 0; i < nytResponse.results.length; i++) {
-    // Get the headline and take out all whitespace characters because
-    // whitespace will always have the highest count and distort our scale.
-    // We do this by splitting and rejoining the string:
-    // https://p5js.org/reference/#/p5/split
-    // https://p5js.org/reference/#/p5/join
-    var headline = join(split(nytResponse.results[i].title, ' '), '');
-    // console.log(headline); // make sure headline strings look right
+    var h = nytResponse.results[i].title;
+    // besides .title, other text data available to you include:
+    // .abstract, .byline, .section, etc. etc.
 
-    for (var j = 0; j < headline.length; j++) {
-      var letter = headline[j];
-
-      // Our letterCounts var is a NumberDict type
-      // see https://p5js.org/reference/#/p5.NumberDict
-      if (!letterCounts) {
-        letterCounts = createNumberDict(letter, 1);
-      } else if (!letterCounts.hasKey(letter)){
-        letterCounts.create(letter, 1);
-      } else {
-        letterCounts.add(letter, 1);
-      }
+    if (!maxHeadLen) {
+      maxHeadLen = h.length;
+    } else if (h.length > maxHeadLen) {
+      maxHeadLen = h.length;
     }
+
+    if (!minHeadLen) {
+      minHeadLen = h.length;
+    } else if (h.length < minHeadLen) {
+      minHeadLen = h.length;
+    }
+    append(headlines, h);
   }
 
-  // console.log(letterCounts); // make sure counted data looks as expected
-  // console.log(letterCounts.maxValue());
-}
-
-function setTextSizeByLetterCount(letter) {
-  // map letter count values to our desired min / max text sizes
-  if (letterCounts.hasKey(letter)) {
-    textSize(map(letterCounts.get(letter),
-                  0, letterCounts.maxValue(),
-                  defaultTextSize, maxTextSize));
-  } else {
-    textSize(defaultTextSize);
-  }
+  // console.log(headlines); // make sure counted data looks as expected
+  // console.log(maxHeadLen);
+  // console.log(minHeadLen);
 }

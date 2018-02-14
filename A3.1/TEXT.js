@@ -1,15 +1,23 @@
-
-
-var myFont;
 var headlines = [];
-var maxHeadLen, minHeadLen;
+var hitwords = [
+  "and",
+  "or",
+  "the",
+  "on",
+  "a",
+  "an",
+  "in",
+  "into",
+  "of",
+  "for",
+  "from"
+];
 
 function preload() {
-  myFont = loadFont('SourceCodePro-Regular.ttf');
 
   // Assemble url for API call
   var url = "https://api.nytimes.com/svc/topstories/v2/home.json";
-  var apikey = "6c251b7589c74deca159acbdaba2d9bb"; // see: https://developer.nytimes.com
+  var apikey = "436e4c0731324a5faa7741a58ba6adec"; // see: https://developer.nytimes.com
   url += "?api-key=" + apikey;
 
   nytResponse = loadJSON(url);
@@ -18,11 +26,10 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(640, 800);
+  createCanvas(640, 1000);
   background(0);
 
-  textSize(7);
-  textFont(myFont);
+  textSize(14);
   textAlign(LEFT);
 
   noLoop(); // since we're not animating, one frame is sufficient: run draw() just once
@@ -33,48 +40,39 @@ function setup() {
 function draw() {
   background(0);
 
-  // Set the left and top margin
+  var lineheight = 24;
   var margin = 40;
   translate(margin, margin);
 
-  var lineheight = 15;
-  var rectheight = 8;
-
   for (var i = 0; i < headlines.length; i++) {
+    var words = split(headlines[i], ' ');
+    // console.log(words);
 
-    // draw rectangle
-    fill(120);
-    var rectwidth = map(headlines[i].length,minHeadLen, maxHeadLen, margin, width-margin*2);
-    rect(0, i*lineheight, rectwidth, -1*rectheight)
+    var nextX = 0;
 
-    // draw headline
-    fill(255);
-    text(headlines[i], 0, i*lineheight);
+    for (var j = 0; j < words.length; j++) {
+      if (hitwords.includes(words[j].toLowerCase())) {
+        fill("orange");
+      } else {
+        fill(255);
+      }
+
+      text(words[j]+' ', nextX, i*lineheight);
+      nextX += textWidth(words[j]+' ');
+    }
   }
 }
 
 function extractHeadlines() {
 
+  // console.log(nytResponse); // take a look at the full API response structure
+
   for (var i = 0; i < nytResponse.results.length; i++) {
     var h = nytResponse.results[i].title;
     // besides .title, other text data available to you include:
     // .abstract, .byline, .section, etc. etc.
-
-    if (!maxHeadLen) {
-      maxHeadLen = h.length;
-    } else if (h.length > maxHeadLen) {
-      maxHeadLen = h.length;
-    }
-
-    if (!minHeadLen) {
-      minHeadLen = h.length;
-    } else if (h.length < minHeadLen) {
-      minHeadLen = h.length;
-    }
     append(headlines, h);
   }
 
   // console.log(headlines); // make sure counted data looks as expected
-  // console.log(maxHeadLen);
-  // console.log(minHeadLen);
 }
