@@ -1,24 +1,28 @@
 var borough = ["Brooklyn", "Queens", "Manhattan", "Bronx", "Staten Island"];
-var people = [5000000, 3800000, 3300000, 3100000, 1500000];
-var lengthMultiplier = 50; 
+var people = [5, 3.8, 3.3, 3.1, 1.5];
+var lengthMultiplier = 5; 
 
 function setup(){
-  createCanvas(500,500);
+  createCanvas(1000,1000);
   noLoop();
 }
 
 function draw(){
-  draw bars of chart//
+  //draw bars of chart//
   for (var i =0; i < borough.length; i++){
     fill(0);
-    rect(120, 50 + 20 * i, borough[i] * lengthMultiplier, 10);
+    rect(45 + 100 * i, 100, 20, people[i] * lengthMultiplier);
   }
-for (var i = 0; i < people.length; i++){
-  text(people[i], 100, 45 + 20 * i);
+  for (var i = 0; i < people.length; i++){
+   text(people[i], 45 + 100 * i, 90);
 }
-insert borough//
+//insert borough//
 for
-  (var i = 0; i < people.length; i++){
-  text(borough[i], 650, 45 + 20 * i); //
+    (var i = 0; i < people.length; i++){
+    text(borough[i], 45 + 100 * i, 200); 
   }
 }
+
+
+
+
