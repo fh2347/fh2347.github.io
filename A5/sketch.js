@@ -2,7 +2,7 @@ var num = 3;
 var springs = []; 
 
 function setup() {
-  createCanvas(710, 400);
+  createCanvas(1000, 600);
   noStroke();
 
   springs[0] = new Spring(240, 260, 40, 0.98, 8.0, 0.1, springs, 0); 
@@ -11,7 +11,7 @@ function setup() {
 }
 
 function draw() {
-  background(51); 
+  background(BLACK); 
 
   for (var i = 0; i < num; i++) {
     springs[i].update(); 
