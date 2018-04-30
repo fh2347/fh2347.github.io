@@ -1,9 +1,4 @@
-// Demonstration of multiple force acting on 
-// bodies (Mover class)
-// Bodies experience gravity continuously
-// Bodies experience fluid resistance when in "water"
 
-// Five moving bodies
 var movers = [];
 
 // Liquid

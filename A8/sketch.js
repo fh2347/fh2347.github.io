@@ -1,13 +1,14 @@
 var table;
 
+function preload(){
+  table = loadTable('Cultural_Institutions2.csv', 'csv', 'header');
+}
 
 function setup() {
   createCanvas(2000, 1300);
-  background(128);
+  background('BLACK');
   frameRate(30);
-}
 
-function draw() {
   var boroughB = table.getColumn("BoroughB");
   var districtB = table.getColumn("DistrictB");
   var typeB = table.getColumn('OwnerTypeB');
@@ -23,13 +24,17 @@ function draw() {
   var boroughS = table.getColumn("BoroughS");
   var districtS = table.getColumn("DistrictS");
   var typeS = table.getColumn('OwnerTypeS');
+}
+
+function draw() {
+  
 
   fill(100);
   textAlign(LEFT);
-  textFont(Times);
+  // textFont('Times');
   textSize(25);
   text('Cultural Institutions in NYC',250,50);
-  textFont(Times);
+  // textFont('Times');
   textSize(20);
  textAlign(CENTER);
   text('Bronx',130,200);
@@ -50,9 +55,9 @@ function draw() {
       noStroke();
      if (districtB[i] == uniqueB[j]){
         if (typeB[i] == 'City'){
-         fill(114,150,183);
+         fill('PINK');
         } else {
-         fill (196,218,241);
+         fill ('WHITE');
         };
         rect(250,j*25+60,20,20);
         translate(25,0);
