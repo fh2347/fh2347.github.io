@@ -3,7 +3,10 @@ var buttonB;
 
 function preload(){
   table = loadTable('Cultural_Institutions2.csv', 'csv', 'header');
+  k1 = loadImage('Key-01.png');
 }
+
+
 
 function setup() {
   createCanvas(800, 800);
@@ -39,7 +42,6 @@ function setup() {
   
   console.log(table.getColumn("Distance"));
 
-  
 
 
 }
@@ -49,11 +51,14 @@ background('white');
 
 basicGraphic('0.3');
 
+image(k1, 10, 10, 223, 145.3);
+
 }
 
 
 
 function basicGraphic(opacity){
+
   for (var i=0; i<70; i++){
 
   noStroke();
